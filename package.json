@@ -1,9 +1,9 @@
 {
   "dependencies": {
     "koa": "^1.2.4",
+    "koa-static": "^2.0.0",
     "pdfjs-dist": "^1.6.465"
   },
-
   "scripts": {
     "start": "node app.js"
   }
