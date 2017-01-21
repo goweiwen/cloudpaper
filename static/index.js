@@ -6,12 +6,17 @@ const PAGE = 1
 const canvas = document.getElementById('pdf')
 const context = canvas.getContext('2d')
 
-PDFJS.getDocument(FILE)
-    .then(pdf => pdf.getPage(PAGE))
-    .then(page => {
-        const scale = 1
-        const viewport = page.getViewport(scale)
+var pdfDoc = null,
+    pageNum = 1,
+    pageRendering = false,
+    pageNumPending = null,
+    scale = 0.8
 
+function renderPage(num) {
+    pageRendering = true;
+
+    pdfDoc.getPage(num) .then(page => {
+        const viewport = page.getViewport(scale)
         canvas.height = viewport.height
         canvas.width = viewport.width
 
@@ -19,7 +24,47 @@ PDFJS.getDocument(FILE)
             canvasContext: context,
             viewport: viewport
         }
-        page.render(renderContext)
+        const renderTask = page.render(renderContext)
+
+        renderTask.promise.then(() => {
+            pageRendering = false;
+            if (pageNumPending !== null) {
+                renderPage(pageNumPending)
+                pageNumPending = null;
+            }
+        })
+    })
+}
+
+function queueRenderPage(num) {
+    if (pageRendering)
+        pageNumPending = num
+    else
+        renderPage(num)
+}
+
+function onPrevPage() {
+    if (pageNum <= 1) return;
+    pageNum--
+    queueRenderPage(pageNum)
+}
+
+function onNextPage() {
+    if (pageNum >= pdfDoc.numPages) return;
+    pageNum++
+    queueRenderPage(pageNum)
+}
+
+canvas.onclick = e => {
+    const x = e.layerX / canvas.width
+    if (x < 0.3) onPrevPage()
+    else if (x > 0.7) onNextPage()
+}
+
+PDFJS.getDocument(FILE)
+    .then(_pdfDoc => {
+        pdfDoc = _pdfDoc
+        renderPage(pageNum)
     })
 
 const socket = io();
