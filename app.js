@@ -27,12 +27,16 @@ var pdf = [
   {
     id: 0,
     url: '/pdf/CS2100.pdf',
-    num: 2
+    num: 2,
+    x: 0,
+    y: 0
   },
   {
     id: 1,
     url: '/pdf/ST2131.pdf',
-    num: 1
+    num: 1,
+    x: 700,
+    y: 0
   }
 ]
 
