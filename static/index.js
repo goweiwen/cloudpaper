@@ -7,8 +7,8 @@ class PDFDoc {
 
         this.canvas = document.createElement('canvas')
         this.canvas.style.position = 'absolute'
-        document.body.insertBefore(this.canvas, document.body.firstChild)
-        // document.body.appendChild(this.canvas)
+        // document.body.insertBefore(this.canvas, document.body.firstChild)
+        document.body.appendChild(this.canvas)
         this.context = this.canvas.getContext('2d')
 
         this.pdfDoc = null
