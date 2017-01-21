@@ -27,6 +27,25 @@ class PDFDoc {
             else if (x > 0.7) this.onNextPage()
         }
 
+        this.canvas.onmousedown = e => {
+            const rect = this.canvas.getBoundingClientRect();
+            const startX = e.clientX - rect.left
+            const startY = e.clientY - rect.top
+            this.canvas.onmousemove = e => {
+                const x = e.clientX - startX
+                const y = e.clientY - startY
+                this.setPosition(x, y)
+                if (this.socket)
+                    this.socket.emit('pdf move', { id: this.id, x: x, y: y })
+            }
+        }
+
+        this.canvas.onmouseup = e => {
+            this.canvas.onmousemove = null
+            if (this.socket)
+                this.socket.emit('pdf move', { id: this.id, x: this.x, y: this.y })
+        }
+
         PDFJS.getDocument(this.url)
             .then(_pdfDoc => {
                 this.pdfDoc = _pdfDoc
@@ -38,7 +57,6 @@ class PDFDoc {
         this.x = x
         this.y = y
 
-        console.log(x, y)
         this.canvas.style.left = `${x}px`
         this.canvas.style.top = `${y}px`
     }
@@ -48,6 +66,10 @@ class PDFDoc {
         socket.on('pdf page', (data) => {
             const {id, num} = data
             if (id == this.id) this.queueRenderPage(num)
+        })
+        socket.on('pdf move', (data) => {
+            const {id, x, y} = data
+            if (id == this.id) this.setPosition(x, y)
         })
     }
 

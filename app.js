@@ -83,7 +83,22 @@ io.on('connection', ctx => {
       num: num
     })
   })
-  //console.log(socket)
+
+  //pdf move
+  socket.on('pdf move', function(data) {
+    const {id, x, y} = data
+
+    if (pdf[id] == null) return;
+
+    pdf[id].x = x;
+    pdf[id].y = y;
+
+    socket.broadcast.emit('pdf move', {
+      id: id,
+      x: x,
+      y: y
+    })
+  })
 
 });
 
