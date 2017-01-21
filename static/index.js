@@ -1,80 +1,73 @@
 'use strict'
 
-const FILE = '/pdf/CS2100.pdf'
-const PAGE = 1
+class PDFDoc {
+    constructor(url, page) {
+        this.url = url
+        this.canvas = document.createElement('canvas')
+        document.body.appendChild(this.canvas)
+        this.context = this.canvas.getContext('2d')
 
-const canvas = document.getElementById('pdf')
-const context = canvas.getContext('2d')
+        this.pdfDoc = null
+        this.pageNum = page != null ? page : 1
+        this.pageRendering = false
+        this.pageNumPending = null
+        this.scale = 0.8
 
-var pdfDoc = null,
-    pageNum = 1,
-    pageRendering = false,
-    pageNumPending = null,
-    scale = 0.8
-
-function renderPage(num) {
-    pageRendering = true;
-
-    pdfDoc.getPage(num) .then(page => {
-        const viewport = page.getViewport(scale)
-        canvas.height = viewport.height
-        canvas.width = viewport.width
-
-        const renderContext = {
-            canvasContext: context,
-            viewport: viewport
+        this.canvas.onclick = e => {
+            const x = e.layerX / this.canvas.width
+            if (x < 0.3) this.onPrevPage()
+            else if (x > 0.7) this.onNextPage()
         }
-        const renderTask = page.render(renderContext)
 
-        renderTask.promise.then(() => {
-            pageRendering = false;
-            if (pageNumPending !== null) {
-                renderPage(pageNumPending)
-                pageNumPending = null;
+        PDFJS.getDocument(this.url)
+            .then(_pdfDoc => {
+                this.pdfDoc = _pdfDoc
+                this.renderPage(this.pageNum)
+            })
+    }
+
+    renderPage(num) {
+        this.pageRendering = true;
+
+        this.pdfDoc.getPage(num).then(page => {
+            const viewport = page.getViewport(this.scale)
+            this.canvas.height = viewport.height
+            this.canvas.width = viewport.width
+
+            const renderContext = {
+                canvasContext: this.context,
+                viewport: viewport
             }
+            const renderTask = page.render(renderContext)
+
+            renderTask.promise.then(() => {
+                this.pageRendering = false;
+                if (this.pageNumPending !== null) {
+                    this.renderPage(this.pageNumPending)
+                    this.pageNumPending = null;
+                }
+            })
         })
-    })
-}
+    }
 
-function queueRenderPage(num) {
-    if (pageRendering)
-        pageNumPending = num
-    else
-        renderPage(num)
-}
+    queueRenderPage(num) {
+        if (this.pageRendering)
+            this.pageNumPending = num
+        else
+            this.renderPage(num)
+    }
 
-function onPrevPage() {
-    if (pageNum <= 1) return;
-    pageNum--
-    queueRenderPage(pageNum)
-}
+    onPrevPage() {
+        if (this.pageNum <= 1) return;
+        this.pageNum--
+        this.queueRenderPage(this.pageNum)
+    }
 
-function onNextPage() {
-    if (pageNum >= pdfDoc.numPages) return;
-    pageNum++
-    queueRenderPage(pageNum)
-}
-
-canvas.onclick = e => {
-    const x = e.layerX / canvas.width
-    if (x < 0.3) onPrevPage()
-    else if (x > 0.7) onNextPage()
-}
-
-PDFJS.getDocument(FILE)
-    .then(_pdfDoc => {
-        pdfDoc = _pdfDoc
-        renderPage(pageNum)
-    })
-
-const socket = io();
-
-const chatDOM = document.getElementById('chat')
-chatDOM.onkeypress = e => {
-    if (e.keyCode == 13) {
-        const message = chatDOM.value
-
-        console.log(message)
-        socket.emit('message', message)
+    onNextPage() {
+        if (this.pageNum >= this.pdfDoc.numPages) return;
+        this.pageNum++
+        this.queueRenderPage(this.pageNum)
     }
 }
+
+const CS2100 = new PDFDoc('/pdf/CS2100.pdf')
