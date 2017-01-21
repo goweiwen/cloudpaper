@@ -3,4 +3,8 @@
     "koa": "^1.2.4",
     "pdfjs-dist": "^1.6.465"
   }
+
+  "scripts": {
+    "start": "node app.js"
+  }
 }
