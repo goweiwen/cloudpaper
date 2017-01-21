@@ -35,14 +35,19 @@ $('form').submit(function(){
 
 
 socket.on('chat message', function(msg) {
+  $li = $('#messages > li')
+  if ($li.length >= 10) $li.first().remove()
+
   $('#messages').append($('<li>').text(msg));
 });
 
 var pdf = {};
 socket.on('initialise', function(_pdf) {
   pdf = _pdf;
-  for (let i in pdf)
+  for (let i in pdf) {
     pdf[i].pdfDoc = new PDFDoc(i, pdf[i].url, pdf[i].num);
+    pdf[i].pdfDoc.setSocket(socket);
+  }
 });
 
 </script>
