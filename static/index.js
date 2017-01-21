@@ -4,7 +4,9 @@ class PDFDoc {
     constructor(id, url, page) {
         this.id = id
         this.url = url
+
         this.canvas = document.createElement('canvas')
+        this.canvas.style.position = 'fixed'
         document.body.appendChild(this.canvas)
         this.context = this.canvas.getContext('2d')
 
@@ -12,13 +14,16 @@ class PDFDoc {
         this.pageNum = page != null ? page : 1
         this.pageRendering = false
         this.pageNumPending = null
-        this.scale = 0.8
+        this.scale = 1
+
+        this.x = 0
+        this.y = 0
 
         this.canvas.onclick = e => {
-            const x = e.layerX / this.canvas.width
+            const rect = this.canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / this.canvas.width
             if (x < 0.3) this.onPrevPage()
             else if (x > 0.7) this.onNextPage()
-            else return
         }
 
         PDFJS.getDocument(this.url)
@@ -26,6 +31,14 @@ class PDFDoc {
                 this.pdfDoc = _pdfDoc
                 this.renderPage(this.pageNum)
             })
+    }
+
+    setPosition(x, y) {
+        this.x = x
+        this.y = y
+
+        this.canvas.style.left = `${x} px`
+        this.canvas.style.top = `${y} px`
     }
 
     setSocket(socket) {
