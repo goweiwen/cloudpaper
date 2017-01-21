@@ -8,6 +8,7 @@ class PDFDoc {
         this.canvas = document.createElement('canvas')
         this.canvas.style.position = 'absolute'
         this.canvas.style.zIndex = '-999'
+        //
         // document.body.insertBefore(this.canvas, document.body.firstChild)
         document.body.appendChild(this.canvas)
         this.context = this.canvas.getContext('2d')
