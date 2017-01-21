@@ -68,18 +68,21 @@ io.on('connection', ctx => {
 
   //pdf page
   socket.on('pdf page', function(data) {
-    if (pdf[data.id] != null)
-      pdf[data.id].num = data.num;
+    const {id, num} = data
 
-    io.broadcast('pdf page', {
-      id: data.id,
-      num: data.num
-    });
-  });
+    if (pdf[id] == null) return;
+
+    pdf[id].num = num
+
+    socket.broadcast.emit('pdf page', {
+      id: id,
+      num: num
+    })
+  })
   //console.log(socket)
 
 });
 
-const PORT = 3000;
-app.listen(PORT);
-console.log(`listening on port ${PORT}`);
+const PORT = 3000
+app.listen(PORT)
+console.log(`listening on port ${PORT}`)

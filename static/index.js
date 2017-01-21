@@ -30,8 +30,9 @@ class PDFDoc {
 
     setSocket(socket) {
         this.socket = socket
-        socket.on('pdf page', (id, num) => {
-            if (id == this.id) queueRenderPage(num)
+        socket.on('pdf page', (data) => {
+            const {id, num} = data
+            if (id == this.id) this.queueRenderPage(num)
         })
     }
 
@@ -60,11 +61,6 @@ class PDFDoc {
     }
 
     queueRenderPage(num) {
-        if (socket) socket.emit('pdf page', {
-            id: this.id,
-            num: num
-        })
-
         if (this.pageRendering)
             this.pageNumPending = num
         else
@@ -74,12 +70,24 @@ class PDFDoc {
     onPrevPage() {
         if (this.pageNum <= 1) return;
         this.pageNum--
+
+        if (socket) socket.emit('pdf page', {
+            id: this.id,
+            num: this.pageNum
+        })
+
         this.queueRenderPage(this.pageNum)
     }
 
     onNextPage() {
         if (this.pageNum >= this.pdfDoc.numPages) return;
         this.pageNum++
+
+        if (socket) socket.emit('pdf page', {
+            id: this.id,
+            num: this.pageNum
+        })
+
         this.queueRenderPage(this.pageNum)
     }
 }
