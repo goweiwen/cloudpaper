@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "koa": "^1.2.4"
+    "koa": "^1.2.4",
+    "pdfjs-dist": "^1.6.465"
   }
 }
