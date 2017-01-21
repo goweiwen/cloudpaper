@@ -25,8 +25,30 @@ app.use(function*() {
 
 io.attach(app)
 io.on('connection', ctx => {
+    
+    console.log("user connected");
+    
+    //user connect + input name
+    ctx.socket.on('input name', function(nickname){
+    console.log(nickname);
+    ctx.socket.nickname = nickname;
+    io.broadcast('chat message', ctx.socket.nickname + " has joined.");
+    
+    //send message
+    ctx.socket.on('chat message', function(msg){
+    io.broadcast('chat message', ctx.socket.nickname + " says: " + msg);
+        
+  });
 
-    console.log(ctx.data)
+    //disconnect
+    ctx.socket.on('disconnect', function(){
+    io.broadcast('chat message', ctx.socket.nickname + " has left.");
+    console.log('user disconnected');
+    });
+
+
+    })
+    //console.log(ctx.socket)
 
 })
 
