@@ -7,6 +7,7 @@ together effectively.
 ## Deployment 
 
 ### Connection Guide
+```javascript
 For Unix-based Operating systems, do ssh <ip-address> -l <username>. Enter the password thereafter.
 Once you're done, 
 
@@ -24,5 +25,5 @@ This allows us to properly kill the node that was previous active.
 Last but not least,
 
 git pull
-
+```
 followed by a yarn start.
