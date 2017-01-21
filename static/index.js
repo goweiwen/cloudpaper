@@ -1,7 +1,8 @@
 'use strict'
 
 class PDFDoc {
-    constructor(url, page) {
+    constructor(id, url, page) {
+        this.id = id
         this.url = url
         this.canvas = document.createElement('canvas')
         document.body.appendChild(this.canvas)
@@ -17,6 +18,7 @@ class PDFDoc {
             const x = e.layerX / this.canvas.width
             if (x < 0.3) this.onPrevPage()
             else if (x > 0.7) this.onNextPage()
+            else return
         }
 
         PDFJS.getDocument(this.url)
@@ -24,6 +26,13 @@ class PDFDoc {
                 this.pdfDoc = _pdfDoc
                 this.renderPage(this.pageNum)
             })
+    }
+
+    setSocket(socket) {
+        this.socket = socket
+        socket.on('pdf page', (id, num) => {
+            if (id == this.id) queueRenderPage(num)
+        })
     }
 
     renderPage(num) {
@@ -51,6 +60,11 @@ class PDFDoc {
     }
 
     queueRenderPage(num) {
+        if (socket) socket.emit('pdf page', {
+            id: this.id,
+            num: num
+        })
+
         if (this.pageRendering)
             this.pageNumPending = num
         else
@@ -70,4 +84,5 @@ class PDFDoc {
     }
 }
 
-const CS2100 = new PDFDoc('/pdf/CS2100.pdf')
+// const CS2100 = new PDFDoc('/pdf/CS2100.pdf')
+// CS2100.setSocket(socket)
