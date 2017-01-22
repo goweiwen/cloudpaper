@@ -14,9 +14,9 @@ Simulate a Study Group Session
 * Chat box for discussion
 * Drag slides around for organization
 
-Easy sharing of files
+Added functionality
 * Drag and drop PDF files to upload
-
+* Able to zoom in and out pdf with scroll
 
 ## How we built it
 We used Node.JS with Koa2 and Handlebars. PDFs are rendered client side using Mozilla's PDF.js. Communication between server and clients is done using socket.io.
