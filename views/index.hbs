@@ -29,18 +29,23 @@ var nickname = window.prompt("enter nick name");
 socket.emit('input name', nickname);
 
 $('form').submit(function(){
-  socket.emit('chat message', $('#m').val());
-  $('#m').val('');
-  return false;
+  if (($'#m').val() != null || ($'#m').val() != '') {
+      socket.emit('chat message', $('#m').val());
+      $('#m').val('');
+      return true;
+   } else {
+     return false;
+   }
 });
 
 
 socket.on('chat message', function(msg) {
-
-
   $('#messages').append($('<li>').text(msg));
-	
+
     var n = $(document).height();
+    // Debugging Purposes
+    console.log(n);
+
     $('#messages').animate({ scrollTop: n }, 50);
 });
 
