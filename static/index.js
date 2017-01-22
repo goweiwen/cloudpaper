@@ -29,6 +29,13 @@ class PDFDoc {
             else if (x > 0.7) this.onNextPage()
         }
 
+        $(this.canvas).bind('DOMMouseScroll mousewheel', e => {
+            if (e.originalEvent.wheelDelta > 0 || e.originalEvent.detail < 0)
+                this.zoomOut()
+            else
+                this.zoomIn()
+        })
+
         this.canvas.onmousedown = e => {
             const rect = this.canvas.getBoundingClientRect();
             const startX = e.clientX - rect.left
@@ -105,6 +112,16 @@ class PDFDoc {
             this.pageNumPending = num
         else
             this.renderPage(num)
+    }
+
+    zoomIn() {
+        this.scale += 0.02
+        this.queueRenderPage(this.pageNumPending ? this.pageNum : this.pageNum)
+    }
+
+    zoomOut() {
+        this.scale -= 0.02
+        this.queueRenderPage(this.pageNumPending ? this.pageNum : this.pageNum)
     }
 
     onPrevPage() {
