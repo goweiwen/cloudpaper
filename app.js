@@ -63,6 +63,7 @@ io.on('connection', ctx => {
 
   //disconnect
   socket.on('disconnect', function(){
+    if (socket.nickname == null) return;
     io.broadcast('chat message', socket.nickname + " has left.");
     console.log('user disconnected');
   });
