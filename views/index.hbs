@@ -55,13 +55,15 @@ $('form').submit(function(){
   });
 
 socket.on('chat message', function(msg) {
-  $('#messages').append($('<li>').text(msg));
+  if (msg != null) {
+    $('#messages').append($('<li>').text(msg));
 
     var n = $(document).height();
     // Debugging Purposes
-    console.log(n);
+    //console.log(n);
 
     $('#messages').animate({ scrollTop: n }, 50);
+  }
 });
 
 var pdf = {};
