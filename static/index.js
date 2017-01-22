@@ -33,19 +33,20 @@ class PDFDoc {
             const rect = this.canvas.getBoundingClientRect();
             const startX = e.clientX - rect.left
             const startY = e.clientY - rect.top
-            this.canvas.onmousemove = e => {
+
+            document.onmousemove = e => {
                 const x = e.clientX - startX
                 const y = e.clientY - startY
                 this.setPosition(x, y)
                 if (this.socket)
                     this.socket.emit('pdf move', { id: this.id, x: x, y: y })
             }
-        }
 
-        this.canvas.onmouseup = e => {
-            this.canvas.onmousemove = null
-            if (this.socket)
-                this.socket.emit('pdf move', { id: this.id, x: this.x, y: this.y })
+            document.onmouseup = e => {
+                document.onmousemove = null
+                if (this.socket)
+                    this.socket.emit('pdf move', { id: this.id, x: this.x, y: this.y })
+            }
         }
 
         PDFJS.getDocument(this.url)
