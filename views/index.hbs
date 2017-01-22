@@ -41,6 +41,20 @@ $('form').submit(function(){
    }
 });
 
+  $('body').on('dragover', ev => {
+    console.log('dragging over');
+    ev.preventDefault();
+  })
+
+  $('body').on('drop', ev => {
+    console.log('dropped');
+    ev.preventDefault();
+    console.log('supposed to upload now');
+    var data = ev.originalEvent.target.files || (ev.originalEvent.dataTransfer && ev.originalEvent.dataTransfer.files);
+    console.log(data);
+    console.log('uploading file');
+    socket.emit('upload file', data);
+  });
 
 socket.on('chat message', function(msg) {
   $('#messages').append($('<li>').text(msg));
