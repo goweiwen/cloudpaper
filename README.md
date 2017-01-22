@@ -4,7 +4,22 @@
 A webapp for collaborative document viewing designed for students to study
 together effectively.
 
-## Deployment
+## Inspiration
+
+## What it does
+
+
+## How we built it
+
+## Challenges we ran into
+
+## Accomplishments that we're proud of
+
+## What we learned
+
+## What's next for Cloudpaper
+
+## Deployment 
 
 ### Connection Guide
 
