@@ -27,7 +27,7 @@ var pdf = [
   {
     id: 0,
     url: '/pdf/CS2100.pdf',
-    num: 2,
+    num: 1,
     x: 0,
     y: 0
   },
@@ -35,7 +35,7 @@ var pdf = [
     id: 1,
     url: '/pdf/ST2131.pdf',
     num: 1,
-    x: 700,
+    x: 0,
     y: 0
   }
 ]
@@ -98,6 +98,21 @@ io.on('connection', ctx => {
       x: x,
       y: y
     })
+  })
+
+  //pdf upload
+  socket.on('upload file', function(data) {
+    const id = pdf.length
+
+    pdf[id] = {
+      id: id,
+      url: `/pdf/${data}`, // UNSAFE
+      x: 0,
+      y: 0,
+      num: 1
+    }
+
+    io.broadcast('initialise', pdf)
   })
 
 });

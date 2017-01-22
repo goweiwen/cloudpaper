@@ -45,20 +45,15 @@ $('form').submit(function(){
   return false;
 });
 
-  $('body').on('dragover', ev => {
-    console.log('dragging over');
-    ev.preventDefault();
-  })
+$('body').on('dragover', ev => {
+  ev.preventDefault();
+})
 
-  $('body').on('drop', ev => {
-    console.log('dropped');
-    ev.preventDefault();
-    console.log('supposed to upload now');
-    var data = ev.originalEvent.target.files || (ev.originalEvent.dataTransfer && ev.originalEvent.dataTransfer.files);
-    console.log(data);
-    console.log('uploading file');
-    socket.emit('upload file', data);
-  });
+$('body').on('drop', ev => {
+  ev.preventDefault();
+  var data = ev.originalEvent.target.files || (ev.originalEvent.dataTransfer && ev.originalEvent.dataTransfer.files);
+  socket.emit('upload file', data[0].name);
+});
 
 socket.on('chat message', function(msg) {
   if (msg != null && msg != '') {
@@ -74,6 +69,7 @@ socket.on('chat message', function(msg) {
 
 var pdf = {};
 socket.on('initialise', function(_pdf) {
+  console.log(_pdf)
   pdf = _pdf;
   for (let i in pdf) {
     pdf[i].pdfDoc = new PDFDoc(i, pdf[i].url, pdf[i].num);
