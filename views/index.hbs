@@ -77,6 +77,7 @@ socket.on('initialise', function(_pdf) {
   for (let i in pdf) {
     pdf[i].pdfDoc = new PDFDoc(i, pdf[i].url, pdf[i].num);
     pdf[i].pdfDoc.setPosition(pdf[i].x, pdf[i].y);
+    pdf[i].pdfDoc.setScale(pdf[i].scale);
     pdf[i].pdfDoc.setSocket(socket);
   }
 });

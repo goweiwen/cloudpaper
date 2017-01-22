@@ -29,14 +29,16 @@ var pdf = [
     url: '/pdf/CS2100.pdf',
     num: 1,
     x: 0,
-    y: 0
+    y: 0,
+    scale: 0.75
   },
   {
     id: 1,
     url: '/pdf/ST2131.pdf',
     num: 1,
     x: 0,
-    y: 0
+    y: 0,
+    scale: 0.75
   }
 ]
 
@@ -91,13 +93,27 @@ io.on('connection', ctx => {
 
     if (pdf[id] == null) return;
 
-    pdf[id].x = x;
-    pdf[id].y = y;
+    pdf[id].x = x
+    pdf[id].y = y
 
     socket.broadcast.emit('pdf move', {
       id: id,
       x: x,
       y: y
+    })
+  })
+
+  //pdf zoom
+  socket.on('pdf zoom', function(data) {
+    const {id, scale} = data
+
+    if (pdf[id] == null) return;
+
+    pdf[id].scale = scale
+
+    socket.broadcast.emit('pdf zoom', {
+      id: id,
+      scale: scale
     })
   })
 

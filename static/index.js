@@ -81,12 +81,16 @@ class PDFDoc {
             const {id, x, y} = data
             if (id == this.id) this.setPosition(x, y)
         })
+        socket.on('pdf zoom', (data) => {
+            const {id, scale} = data
+            if (id == this.id) this.setScale(scale)
+        })
     }
 
     renderPage(num) {
         this.pageRendering = true;
 
-        this.pdfDoc.getPage(num).then(page => {
+        if (this.pdfDoc) this.pdfDoc.getPage(num).then(page => {
             const viewport = page.getViewport(this.scale)
             this.canvas.height = viewport.height
             this.canvas.width = viewport.width
@@ -114,14 +118,19 @@ class PDFDoc {
             this.renderPage(num)
     }
 
-    zoomIn() {
-        this.scale += 0.02
+    setScale(scale) {
+        this.scale = scale
         this.queueRenderPage(this.pageNumPending ? this.pageNum : this.pageNum)
     }
 
+    zoomIn() {
+        if (this.socket) this.socket.emit('pdf zoom', { id: this.id, scale: this.scale })
+        this.setScale(this.scale + 0.02)
+    }
+
     zoomOut() {
-        this.scale -= 0.02
-        this.queueRenderPage(this.pageNumPending ? this.pageNum : this.pageNum)
+        if (this.socket) this.socket.emit('pdf zoom', { id: this.id, scale: this.scale })
+        this.setScale(this.scale - 0.02)
     }
 
     onPrevPage() {
