@@ -35,10 +35,9 @@ $('form').submit(function(){
   if ($('#m').val() !== null || $('#m').val() !== '') {
       socket.emit('chat message', $('#m').val());
       $('#m').val('');
-      return true;
-   } else {
-     return false;
+      return false;
    }
+  return false;
 });
 
   $('body').on('dragover', ev => {
