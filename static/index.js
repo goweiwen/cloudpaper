@@ -17,7 +17,7 @@ class PDFDoc {
         this.pageNum = page != null ? page : 1
         this.pageRendering = false
         this.pageNumPending = null
-        this.scale = 1
+        this.scale = 0.5
 
         this.x = 0
         this.y = 0
