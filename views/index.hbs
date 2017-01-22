@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>Chat</title>
 
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,14 +24,21 @@
 <script>
 var socket = io();
 
-var nickname = window.prompt("enter nick name");
+var nickname = window.prompt("Enter your nick name.");
 
 socket.emit('input name', nickname);
 
 $('form').submit(function(){
-  socket.emit('chat message', $('#m').val());
-  $('#m').val('');
-  return false;
+  // Debugging Purposes Only
+  console.log($('#m').val());
+
+  if ($('#m').val() !== null || $('#m').val() !== '') {
+      socket.emit('chat message', $('#m').val());
+      $('#m').val('');
+      return true;
+   } else {
+     return false;
+   }
 });
 
   $('body').on('dragover', ev => {
@@ -50,11 +57,12 @@ $('form').submit(function(){
   });
 
 socket.on('chat message', function(msg) {
-
-
   $('#messages').append($('<li>').text(msg));
-	
+
     var n = $(document).height();
+    // Debugging Purposes
+    console.log(n);
+
     $('#messages').animate({ scrollTop: n }, 50);
 });
 
