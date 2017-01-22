@@ -25,7 +25,9 @@
 <script>
 var socket = io();
 
-var nickname = window.prompt("Enter your nick name.");
+var nickname = null;
+while (nickname == null || nickname === '')
+  nickname = window.prompt("Enter your nick name.");
 
 socket.emit('input name', nickname);
 
