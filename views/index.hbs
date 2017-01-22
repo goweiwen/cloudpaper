@@ -7,14 +7,9 @@
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
       form { background: #ffffff; padding: 3px; position: absolute; right: 0; bottom: 0; width: 300px;}
-      form input { border: 0; padding: 10px; width: 80%;}
-      form button { width: auto;); border: none; padding: 10px;}
       #messages { list-style-type: none; margin: 0; padding: 0; float: right; width:300px; ;word-wrap: break-word;  overflow:hidden; overflow-y:auto; max-height: 500px; background-color: transparent;}
-      #messages li { padding: 5px 10px; }
+      #messages li { padding: 5px 10px; background: #fff; }
       #messages li:nth-child(odd) { background: #eee; }
-      input, select, textarea{
-        color: #ffffff;
-      }
     </style>
     <!-- Compiled and minified CSS -->
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
@@ -23,10 +18,12 @@
      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
   </head>
   <body>
-    <ul id="messages"></ul>
-    <form class="amber darken-3 z-depth-3" action="" padding="12px">
-      <input id="m" style="color: #ffffff;" autocomplete="off" /><button class="waves-effect waves-light btn">
-          Send <i class="material-icons right">send</i></button>
+    <ul id="messages" class="z-depth-3"></ul>
+    <form class="white darken-3 z-depth-3" action="" padding="12px">
+      <input id="m" class="" autocomplete="off" />
+      <button class="waves-effect waves-light btn">
+          Send <i class="material-icons right">send</i>
+      </button>
     </form>
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
