@@ -1,8 +1,7 @@
 # Cloudpaper.
 
 ## Introduction
-A webapp for collaborative document viewing designed for students to study
-together effectively.
+A webapp for collaborative document viewing designed for students to study together effectively.
 
 ## Demo
 [Try it out here!](http://tinyurl.com/cloudpaper2017)
@@ -11,22 +10,21 @@ together effectively.
 Cloud paper provides an online platform for collaborative learning.
 
 Simulate a Study Group Session
-	* Real time synchronized PDF page turning
-	* Chat box for discussion
-	* Drag slides around for organization
+* Real time synchronized PDF page turning
+* Chat box for discussion
+* Drag slides around for organization
 
 Easy sharing of files
-	* Drag and drop PDF files to upload
+* Drag and drop PDF files to upload
 
 
 ## How we built it
-We used Node.JS with Koa2 and Handlebars. PDFs are rendered client side using Mozilla's
-PDF.js. Communication between server and clients is done using socket.io.
+We used Node.JS with Koa2 and Handlebars. PDFs are rendered client side using Mozilla's PDF.js. Communication between server and clients is done using socket.io.
 
 ## Challenges we ran into
 We initially had trouble with the drag and drop functionality, but managed to overcome it.
 Settling on a UI that would be optimal was also a challenge, but we were able to settle on a design with feedback from other participants.
-Half of the team members had minimal experience in javascript and almost everyone in the team picked up NodeJS within this hackathon.\
+Half of the team members had minimal experience in javascript and almost everyone in the team picked up NodeJS within this hackathon.
 
 ## Accomplishments that we're proud of
 We used this hackathon as an opportunity to implement things we have not tried before. (Koa, socket.io, PDF.js)
@@ -38,11 +36,11 @@ This was a great learning experience in software engineering for all of us.
 We learnt that good planning from the start and well allocation and delegation of work load will help us finish the app on time.
 
 ## What's next for Cloudpaper
-"Room" System
-Annotation of lecture slides
-Whiteboard for diagram drawing
-Video Support to view lectures together
-Voice communication Support
+* "Room" System
+* Annotation of lecture slides
+* Whiteboard for diagram drawing
+* Video Support to view lectures together
+* Voice Communication Support
 
 
 ## Deployment
