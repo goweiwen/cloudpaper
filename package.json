@@ -8,6 +8,7 @@
     "koa-socket": "^4.4.0",
     "koa-static": "^2.0.0",
     "materialize": "^1.0.0",
+    "materialize-css": "^0.97.8",
     "yo": "^1.8.5"
   },
   "engines": {
