@@ -17,10 +17,15 @@
   <body>
     <ul id="messages"></ul>
     <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
+      <input id="m" autocomplete="off" /><button class="waves-effect waves-light btn">Send</button>
     </form>
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 <script>
 var socket = io();
 
@@ -30,44 +35,40 @@ socket.emit('input name', nickname);
 
 $('form').submit(function(){
   // Debugging Purposes Only
-  console.log($('#m').val());
+  //console.log($('#m').val());
 
-  if ($('#m').val() !== null || $('#m').val() !== '') {
+  if ($('#m').val() != null && $('#m').val() != '') {
       socket.emit('chat message', $('#m').val());
       $('#m').val('');
-      return true;
-   } else {
-     return false;
-   }
+  }
+  return false;
 });
 
-  $('body').on('dragover', ev => {
-    console.log('dragging over');
-    ev.preventDefault();
-  })
+$('body').on('dragover', ev => {
+  ev.preventDefault();
+})
 
-  $('body').on('drop', ev => {
-    console.log('dropped');
-    ev.preventDefault();
-    console.log('supposed to upload now');
-    var data = ev.originalEvent.target.files || (ev.originalEvent.dataTransfer && ev.originalEvent.dataTransfer.files);
-    console.log(data);
-    console.log('uploading file');
-    socket.emit('upload file', data);
-  });
+$('body').on('drop', ev => {
+  ev.preventDefault();
+  var data = ev.originalEvent.target.files || (ev.originalEvent.dataTransfer && ev.originalEvent.dataTransfer.files);
+  socket.emit('upload file', data[0].name);
+});
 
 socket.on('chat message', function(msg) {
-  $('#messages').append($('<li>').text(msg));
+  if (msg != null && msg != '') {
+    $('#messages').append($('<li>').text(msg));
 
     var n = $(document).height();
     // Debugging Purposes
-    console.log(n);
+    //console.log(n);s
 
     $('#messages').animate({ scrollTop: n }, 50);
+  }
 });
 
 var pdf = {};
 socket.on('initialise', function(_pdf) {
+  console.log(_pdf)
   pdf = _pdf;
   for (let i in pdf) {
     pdf[i].pdfDoc = new PDFDoc(i, pdf[i].url, pdf[i].num);
