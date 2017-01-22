@@ -17,10 +17,15 @@
   <body>
     <ul id="messages"></ul>
     <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
+      <input id="m" autocomplete="off" /><button class="waves-effect waves-light btn">Send</button>
     </form>
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 <script>
 var socket = io();
 
@@ -32,7 +37,7 @@ $('form').submit(function(){
   // Debugging Purposes Only
   //console.log($('#m').val());
 
-  if ($('#m').val() != null || $('#m').val() != '') {
+  if ($('#m').val() != null && $('#m').val() != '') {
       socket.emit('chat message', $('#m').val());
       $('#m').val('');
   }
@@ -50,12 +55,12 @@ $('body').on('drop', ev => {
 });
 
 socket.on('chat message', function(msg) {
-  if (msg != null) {
+  if (msg != null && msg != '') {
     $('#messages').append($('<li>').text(msg));
 
     var n = $(document).height();
     // Debugging Purposes
-    //console.log(n);
+    //console.log(n);s
 
     $('#messages').animate({ scrollTop: n }, 50);
   }
